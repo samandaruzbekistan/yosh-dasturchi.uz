@@ -41,7 +41,7 @@
                 @foreach($data as $id => $section)
                     <div class="col-12 col-md-6">
                         <div class="card">
-                            <img class="card-img-top" src="{{ asset('storage/' . $section->photo) }}" alt="Unsplash">
+                            <img class="card-img-top" src="{{ asset( $section->photo) }}" alt="Unsplash">
                             <div class="card-header">
                                 <h3 class=" mb-0">{{ $section->name }}</h3>
                                 <h1 class="card-title mb-0">{{ $section->description }}</h1>
@@ -50,7 +50,7 @@
                                 <p class="card-text">Darslar soni: {{ $section->lessons_count }} ta</p>
                                 <a href="{{ route('admin.lessons', ['section_id' => $section->id]) }}" class="card-link">Darslarni ko'rish</a>
                                 <a href="{{ route('admin.section.users', ['id' => $section->id]) }}" class="card-link">O'quvchilar</a>
-                                <a href="#" class="card-link">O'chirish</a>
+                                <a href="{{ route('admin.section.delete', ['id' => $section->id]) }}" class="card-link delete-section" data-id="{{ $section->id }}">O'chirish</a>
                             </div>
                         </div>
                     </div>

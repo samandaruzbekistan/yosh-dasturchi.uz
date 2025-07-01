@@ -95,4 +95,12 @@ class QuizRepository
     public function getLessonResults($lesson_id){
         return QuizResult::with('user')->where('lesson_id', $lesson_id)->paginate(100);
     }
+
+    public function deleteQuizResult($id){
+        QuizResult::find($id)->delete();
+    }
+
+    public function deleteQuizResultByLessonId($lesson_id){
+        QuizResult::where('lesson_id', $lesson_id)->delete();
+    }
 }

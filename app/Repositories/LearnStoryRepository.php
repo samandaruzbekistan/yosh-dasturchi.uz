@@ -33,4 +33,8 @@ class LearnStoryRepository
     public function getSectionStories($section_id){
         return LearnStory::where('section_id', $section_id)->paginate(100);
     }
+
+    public function deleteStoryByLessonId($lesson_id){
+        LearnStory::where('lesson_id', $lesson_id)->delete();
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Repositories\LearnStoryRepository;
 use App\Repositories\LessonRepository;
 use App\Repositories\SectionRepository;
+use App\Repositories\QuizRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -13,12 +14,14 @@ class SectionController extends Controller
     protected $sectionRepo;
     protected $lessonRepo;
     protected $learnStoryRepo;
+    protected $quizRepo;
 
-    public function __construct(SectionRepository $sectionRepo, LessonRepository $lessonRepo, LearnStoryRepository $learnStoryRepo)
+    public function __construct(SectionRepository $sectionRepo, LessonRepository $lessonRepo, LearnStoryRepository $learnStoryRepo, QuizRepository $quizRepo)
     {
         $this->sectionRepo = $sectionRepo;
         $this->lessonRepo = $lessonRepo;
         $this->learnStoryRepo = $learnStoryRepo;
+        $this->quizRepo = $quizRepo;
     }
 
     public function view_section($id){
@@ -78,8 +81,9 @@ class SectionController extends Controller
         if ($request->hasFile('photo')) {
             $image = $request->file('photo');
             $imageName = time() . '_' . $image->getClientOriginalName(); // Generate a unique name for the image
-            $imagePath = $image->storeAs('sections/photos', $imageName, 'public'); // Store the image in 'storage/app/public/sections/photos'
-
+            $image->move(public_path('images/sections'), $imageName);
+            // $imagePath = $image->storeAs('sections/photos', $imageName, 'public'); // Store the image in 'storage/app/public/sections/photos'
+            $imagePath = 'images/sections/' . $imageName;
             // Create the new section with the uploaded image path
             $section = $this->sectionRepo->addSection($data['name'],$data['description'], $imagePath);
 
@@ -153,5 +157,25 @@ class SectionController extends Controller
         $section = $this->sectionRepo->getSection($id);
         $prosent = $section->lessons_count / 100;
         return view('admin.section_students', ['stories' => $stories, 'section' => $section, 'prosent' => $prosent]);
+    }
+
+    public function delete_section($id){
+        $lessons = $this->lessonRepo->getLessons($id)->get();
+        foreach ($lessons as $lesson) {
+            $quizzes = $this->quizRepo->lessonQuizzes($lesson->id);
+            foreach ($quizzes as $quiz) {
+                $this->quizRepo->deleteQuiz($quiz->id, $lesson->id);
+            }
+            $this->quizRepo->deleteQuizResultByLessonId($lesson->id);
+            $this->learnStoryRepo->deleteStoryByLessonId($lesson->id);
+            $this->lessonRepo->deleteLesson($lesson->id);
+        }
+        // return redirect()->back()->with('success', 'Bo\'lim muvaffaqiyatli o\'chirildi.');
+
+        $deleted = $this->sectionRepo->deleteSection($id);
+        if (!$deleted) {
+            return response()->json(['message' => 'Section not found'], 404);
+        }
+        return redirect()->back()->with('success', 'Bo\'lim muvaffaqiyatli o\'chirildi.');
     }
 }

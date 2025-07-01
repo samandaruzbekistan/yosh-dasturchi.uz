@@ -50,7 +50,7 @@ Route::prefix('admin')->group(callback: function () {
     Route::middleware(['adminAuth'])->group(function () {
         Route::get('sections', [SectionController::class, 'index'])->name('admin.home');
         Route::post('/sections', [SectionController::class, 'store'])->name('admin.section.store');
-
+        Route::get('/sections/{id}', [SectionController::class, 'delete_section'])->name('admin.section.delete');
         Route::get('/lessons/{section_id}', [LessonController::class, 'index'])->name('admin.lessons');
         Route::post('/lesson-store', [LessonController::class, 'store'])->name('admin.lesson.upload');
         Route::get('/lesson-edit/{id}', [LessonController::class, 'edit_form'])->name('admin.lesson.edit');
