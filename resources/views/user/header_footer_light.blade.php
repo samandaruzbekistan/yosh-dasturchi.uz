@@ -71,6 +71,9 @@
                         <li class="nav-item @yield('index')">
                             <a class="nav-link" href="{{ route('user.index') }}">Bosh sahifa</a>
                         </li>
+                        <li class="nav-item @yield('sections')">
+                            <a class="nav-link" href="{{ asset('/') }}#sections">Bo'limlar</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#author">Muallif</a>
                         </li>

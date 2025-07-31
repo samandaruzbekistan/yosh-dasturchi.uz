@@ -99,10 +99,15 @@ class LessonController extends Controller
     public function delete($lesson_id)
     {
         try {
-            // Call the repository to delete the lesson
+            $lesson = $this->lessonRepo->getLesson($lesson_id);
+            $quizzes = $this->quizRepo->lessonQuizzes($lesson_id);
+            foreach ($quizzes as $quiz) {
+                $this->quizRepo->deleteQuiz($quiz->id, $lesson_id);
+            }
+            $this->quizRepo->deleteQuizResultByLessonId($lesson_id);
+            $this->learnStoryRepo->deleteStoryByLessonId($lesson_id);
             $this->lessonRepo->deleteLesson($lesson_id);
-
-            // Return a success message or redirect
+            $this->sectionRepo->decrementLessonCount($lesson->section_id);
             return redirect()->back()->with('success',"Dars o'chirildi");
         } catch (\Exception $e) {
             // Handle errors (lesson not found, etc.)
@@ -171,7 +176,7 @@ class LessonController extends Controller
 
     public function quiz_results($id){
         $validator = Validator::make(['id' => $id], [
-            'id' => 'required|integer|min:1|exists:sections,id',
+            'id' => 'required|integer|min:1|exists:lessons,id',
         ]);
         if ($validator->fails()) {
             abort(404, 'Page not found');

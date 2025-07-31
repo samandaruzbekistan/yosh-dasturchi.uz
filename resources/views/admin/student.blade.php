@@ -114,7 +114,7 @@
                                             <tr>
                                                 <th>Kurs nomi</th>
                                                 <th>Oxirgi dars</th>
-                                                <th>Test bali</th>
+                                                {{-- <th>Test bali</th> --}}
                                             </tr>
                                         </thead>
                                         <tbody class="old-data">
@@ -122,7 +122,7 @@
                                             <tr>
                                                 <td>{{ $story->section->name }}</td>
                                                 <td>{{ $story->lesson->name }}</td>
-                                                <td>{{ $story->lesson->name }}</td>
+                                                {{-- <td>{{ $story->lesson->name }}</td> --}}
                                             </tr>
                                         @endforeach
                                         </tbody>

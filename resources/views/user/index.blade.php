@@ -19,7 +19,7 @@
                             </h2>
                             <div>
                                 <a href="#" class="primary-btn2 mb-3 mb-sm-0">Dastur haqida</a>
-                                <a href="#" class="primary-btn ml-sm-3 ml-0">Bo'limlar</a>
+                                <a href="#sections" class="primary-btn ml-sm-3 ml-0">Bo'limlar</a>
                             </div>
                         </div>
                     </div>
@@ -84,7 +84,7 @@
     <!--================ End Feature Area =================-->
 
     <!--================ Start Popular Courses Area =================-->
-    <div class="popular_courses">
+    <div class="popular_courses" id="sections">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-5">
@@ -103,7 +103,7 @@
                         @foreach($sections as $section)
                             <div class="single_course">
                                 <div class="course_head">
-                                    <img class="img-fluid" src="{{ asset('storage/' . $section->photo) }}" alt="" />
+                                    <img class="img-fluid" src="{{ asset( $section->photo) }}" alt="" />
                                 </div>
                                 <div class="course_content">
                                     <span class="price">Bepul</span>
@@ -227,7 +227,7 @@
             <div class="row justify-content-center d-flex align-items-center">
                 <div class="col-lg-3 col-md-6 col-sm-12 single-trainer">
                     <div class="thumb d-flex justify-content-sm-center">
-                        <img class="img-fluid" src="img/author/author1.jpg" alt="" />
+                        <img class="img-fluid" src="img/author/author1.JPG" alt="" />
                     </div>
                     <div class="meta-text text-sm-center">
                         <h4>Badalov Azamat</h4>
