@@ -138,6 +138,9 @@
             @endif
             @if(isset($result))
                 <h2 class="text-center">Test yechilgan, natija: {{ $result->percent }}%</h2>
+            {{-- if quizzes not exist --}}
+            @elseif(count($quizzes) == 0)
+                <!-- Testlar mavjud emas -->
             @else
                 <h2 class="text-center">Testlarni yeching</h2>
                 <form action="{{ route('user.test.check') }}" method="post">
